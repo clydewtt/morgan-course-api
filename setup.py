@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="morgan_course_data",
-    version="0.1.2",
+    version="0.1.3",
     packages=find_packages(),
     install_requires=["pymongo"],
     description="Python package for querying Morgan State University course data.",
