@@ -1,0 +1,8 @@
+# env variables
+.env
+.env.development
+.env.production
+
+.venv/
+
+**/__pycache__/
