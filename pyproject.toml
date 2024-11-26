@@ -1,0 +1,11 @@
+[project]
+name = "morgan-course-data"
+version = "0.1.2"
+description = "A Python package to query and manage Morgan State University's course data."
+readme = "README.md"
+authors = [
+    { name = "Clyde Tandjong", email = "cltandjong@gmail.com" }
+]
+
+[project.urls]
+Homepage = "https://github.com/clydewtt/morgan-course-api"

@@ -102,7 +102,7 @@ class MorganCourseData:
         
         return courses
 
-    def get_course_by_subject(self, subject_abbrevation: str) -> list[Course]:
+    def get_courses_by_subject(self, subject_abbrevation: str) -> list[Course]:
         """
         Fetch courses for a specific subject.
 
