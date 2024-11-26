@@ -1,6 +1,6 @@
 [project]
 name = "morgan-course-data"
-version = "0.1.3"
+version = "0.1.4"
 description = "A Python package to query and manage Morgan State University's course data."
 readme = "README.md"
 authors = [
