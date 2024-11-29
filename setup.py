@@ -3,8 +3,8 @@ import pathlib
 
 HERE = pathlib.Path(__file__).parent
 
-
-README = (HERE / "README.md").read_text()
+# Explicitly specify UTF-8 encoding when reading the README
+README = (HERE / "README.md").read_text(encoding="utf-8")
 
 setup(
     name="morgan_course_data",
