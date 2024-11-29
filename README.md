@@ -152,6 +152,10 @@ for section in mack_sections: # List[CourseSection]
 
 Fetch a list of all instructors and the courses they teach:
 
+#### Returns:
+- **`instructors`**: A list of all [`Instructor`](#instructor) objects
+
+#### Example Usage
 ```python
 instructors = morgan_data.get_all_instructors() # List[Instructor]
 
@@ -166,6 +170,10 @@ for instructor in instructors:
 
 Retrieve a dictionary of subjects and their abbreviations:
 
+#### Returns:
+- **`dict`**: A dictionary/map of subjects and their abbreviation. `Dict[key=subject: str, value=abbreviation: str]`
+
+#### Example Usage
 ```python
 subject_mappings = morgan_data.get_subject_abbreviation_map() # Dict[subject: str, abbreviation: str]
 
