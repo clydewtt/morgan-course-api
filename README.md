@@ -1,6 +1,8 @@
 
 # Morgan Course Data API
-![PyPI](https://img.shields.io/pypi/v/morgan-course-data) ![Downloads](https://img.shields.io/pypi/dm/morgan-course-data) ![Morgan State University](https://img.shields.io/badge/Morgan%20State%20University-🐻-blue)
+![PyPI](https://img.shields.io/pypi/v/morgan-course-data) ![Downloads](https://img.shields.io/pypi/dm/morgan-course-data) ![Morgan State University](https://img.shields.io/badge/Morgan%20State%20University-🐻-blue) 
+
+![FALL_2024_Refresh_Date](https://img.shields.io/badge/FALL%202024%20Data%20Refresh-11/29/24-orange) ![WINTER_2025_Refresh_Date](https://img.shields.io/badge/WINTER%202025%20Data%20Refresh-11/29/24-blue) ![SPRING_2025_Refresh_Date](https://img.shields.io/badge/SPRING%202025%20Data%20Refresh-11/29/24-orange)
 
 A Python package for interacting with Morgan State University's course data. This package enables developers to query courses, retrieve instructor information, and perform various operations on course data efficiently.
 
