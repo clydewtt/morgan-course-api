@@ -150,6 +150,23 @@ for section in mack_sections: # List[CourseSection]
 
 ---
 
+### Get Courses by Instructor
+
+Retrieve all courses and sections taught by a specific instructor. Format the instructor name as `'LastName, FirstName'`:
+
+#### Returns:
+- **`courses`**: A list of all [`Course`](#course) objects with the specified instructor
+
+#### Example Usage
+```python
+mack_courses = morgan_data.get_courses_by_instructor("Mack, Naja")
+
+for course in mack_courses: # List[Course]
+    print(course)
+```
+
+---
+
 ### Get All Instructors
 
 Fetch a list of all instructors and the courses they teach:
@@ -193,6 +210,7 @@ class Course:
     signature: str
     subject_abbreviation: str
     subject: str
+    description: str
     credit_hours: int
     name: str
     number: str

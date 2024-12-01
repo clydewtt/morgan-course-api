@@ -18,6 +18,7 @@ class Course:
     signature: str
     subject_abbreviation: str
     subject: str
+    description: str
     credit_hours: int
     name: str
     number: str

@@ -8,7 +8,7 @@ README = (HERE / "README.md").read_text(encoding="utf-8")
 
 setup(
     name="morgan_course_data",
-    version="0.1.1",
+    version="0.1.2",
     packages=find_packages(),
     description="Python package for querying Morgan State University course data.",
     long_description=README,

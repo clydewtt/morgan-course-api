@@ -23,7 +23,7 @@ class MorganCourseData:
             raise ValueError(f"Invalid term '{term}'. Allowed terms are: {', '.join(self.ALLOWED_TERMS)}")
 
         self.course_db = get_db_connection(term)['COURSES']
-        self.other_db = get_db_connection("SPRING_2025")['OTHER_DATA']
+        self.other_db = get_db_connection(term)['OTHER_DATA']
 
     def get_courses_paginated(
         self, cursor: Optional[str] = None, page_size: int = 20
@@ -84,6 +84,7 @@ class MorganCourseData:
                 signature=raw_course.get("signature", ""),
                 subject_abbreviation=raw_course.get("subject_abbreviation", ""),
                 subject=raw_course.get("subject", ""),
+                description=raw_course.get("description", ""),
                 credit_hours=raw_course.get("credit_hours", 0),
                 name=raw_course.get("name", ""),
                 number=raw_course.get("number", ""),
@@ -152,6 +153,7 @@ class MorganCourseData:
                 signature=raw_course.get("signature", ""),
                 subject_abbreviation=raw_course.get("subject_abbreviation", ""),
                 subject=raw_course.get("subject", ""),
+                description=raw_course.get("description", ""),
                 credit_hours=raw_course.get("credit_hours", 0),
                 name=raw_course.get("name", ""),
                 number=raw_course.get("number", ""),
@@ -188,16 +190,17 @@ class MorganCourseData:
 
         # Create and return the `Course` dataclass object
         return Course(
-                signature=doc["signature"],
-                subject_abbreviation=doc["subject_abbreviation"],
-                subject=doc["subject"],
-                credit_hours=doc["credit_hours"],
-                name=doc["name"],
-                number=doc["number"],
-                full_name=doc["full_name"],
-                prerequisites=doc["prerequisites"],
-                sections=sections
-            )
+            signature=doc.get("signature", ""),
+            subject_abbreviation=doc.get("subject_abbreviation", ""),
+            subject=doc.get("subject", ""),
+            description=doc.get("description", ""),
+            credit_hours=doc.get("credit_hours", 0),
+            name=doc.get("name", ""),
+            number=doc.get("number", ""),
+            full_name=doc.get("full_name", ""),
+            prerequisites=doc.get("prerequisites", {}),
+            sections=sections
+        )
 
     def get_courses_by_subject_abbreviation(self, subject_abbreviation: str) -> List[Course]:
         """
@@ -221,14 +224,15 @@ class MorganCourseData:
                 CourseSection(**{k: v for k, v in section.items() if k != '_id'})
                 for section in doc.get("sections", [])]
             course = Course(
-                signature=doc["signature"],
-                subject_abbreviation=doc["subject_abbreviation"],
-                subject=doc["subject"],
-                credit_hours=doc["credit_hours"],
-                name=doc["name"],
-                number=doc["number"],
-                full_name=doc["full_name"],
-                prerequisites=doc["prerequisites"],
+                signature=doc.get("signature", ""),
+                subject_abbreviation=doc.get("subject_abbreviation", ""),
+                subject=doc.get("subject", ""),
+                description=doc.get("description", ""),
+                credit_hours=doc.get("credit_hours", 0),
+                name=doc.get("name", ""),
+                number=doc.get("number", ""),
+                full_name=doc.get("full_name", ""),
+                prerequisites=doc.get("prerequisites", {}),
                 sections=sections
             )
             courses.append(course)
@@ -255,7 +259,7 @@ class MorganCourseData:
             # Filter sections for the specified instructor
             filtered_sections = [
                 CourseSection(**{k: v for k, v in section.items() if k != "_id"})
-                for section in doc["sections"]
+                for section in doc.get("sections", [])
                 if section["instructor"] == instructor_name
             ]
 
@@ -264,6 +268,70 @@ class MorganCourseData:
 
         return sections
 
+    def get_courses_by_instructor(self, instructor_name: str) -> List[Course]:
+        """
+        Fetch courses taught by the specified instructor, including only the sections they teach.
+
+        Args:
+            instructor_name (str): The instructor name for which the course data should be retrieved. Follows `lastName, firstName`
+
+            Example: 'Naja, Mack'
+
+        Returns:
+            A list of `Course` objects with filtered `CourseSection` instances taught by the given instructor.
+        """
+        # Query for documents where at least one section has the specified instructor
+        data = self.course_db.find({"sections.instructor": instructor_name})
+
+        result = []
+        for doc in data:
+            # Filter sections for the specified instructor
+            filtered_sections = [
+                CourseSection(
+                    title=section.get("title", ""),
+                    section=section.get("section", ""),
+                    type=section.get("type", ""),
+                    crn=section.get("crn", -1),
+                    instructional_method=section.get("instructional_method", ""),
+                    instructor=section.get("instructor", ""),
+                    enrollment_actual=section.get("enrollment_actual", ""),
+                    enrollment_max=section.get("enrollment_max", ""),
+                    enrollment_available=section.get("enrollment_available", ""),
+                    meetings=[
+                        Meeting(
+                            start_time=meeting.get("start_time", ""),
+                            end_time=meeting.get("end_time", ""),
+                            days=meeting.get("days", []),
+                            building=meeting.get("building", ""),
+                            campus=meeting.get("campus", ""),
+                            room=meeting.get("room", ""),
+                            start_date=meeting.get("start_date", ""),
+                            end_date=meeting.get("end_date", ""),
+                        )
+                        for meeting in section.get("meetings", [])
+                    ],
+                )
+                for section in doc.get("sections", [])
+                if section.get("instructor") == instructor_name
+            ]
+
+            if filtered_sections:
+                # Create a Course object with filtered sections
+                course = Course(
+                    signature=doc.get("signature", ""),
+                    subject_abbreviation=doc.get("subject_abbreviation", ""),
+                    subject=doc.get("subject", ""),
+                    description=doc.get("description", ""),
+                    credit_hours=doc.get("credit_hours", 0),
+                    name=doc.get("name", ""),
+                    number=doc.get("number", ""),
+                    full_name=doc.get("full_name", ""),
+                    prerequisites=doc.get("prerequisites", {}),
+                    sections=filtered_sections,
+                )
+                result.append(course)
+
+        return result
 
     def get_all_instructors(self) -> list[Instructor]:
         """
