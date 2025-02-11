@@ -8,7 +8,7 @@ README = (HERE / "README.md").read_text(encoding="utf-8")
 
 setup(
     name="morgan_course_data",
-    version="0.1.2",
+    version="0.1.3",
     packages=find_packages(),
     description="Python package for querying Morgan State University course data.",
     long_description=README,
@@ -20,6 +20,6 @@ setup(
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
     ],
-    install_requires=["pymongo", "bson"],
+    install_requires=["pymongo"],
     extras_require={"dev": ["pytest>=6.0.0"]},
 )
